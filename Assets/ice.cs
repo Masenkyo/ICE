@@ -6,28 +6,34 @@ using System.Text;
 using UnityEngine;
 
 public class ice : MonoBehaviour
-{
+{ 
     void Start()
-    {
-       Assembly assembly = Compile(@"
+    { 
+        Run(@"
          using UnityEngine;
          public class Test
          {
            public static void Foo()
            {
-            Debug.Log(""Hello, World!"");
+              Debug.Log(""Hello, World!"");
            }
-          }");
-   
-       var method = assembly.GetType("Test").GetMethod("Foo");
-       var del = (Action)Delegate.CreateDelegate(typeof(Action), method);
-       del.Invoke();
+         }"
+        );
     }
-     
-   public static Assembly Compile(string source)
-   {
-     var provider = new CSharpCodeProvider();
-     var param = new CompilerParameters();
+    
+    void Run(string code) 
+    {
+        Assembly assembly = Compile(code);
+       
+        var method = assembly.GetType("Test").GetMethod("Foo");
+        var del = (Action)Delegate.CreateDelegate(typeof(Action), method);
+        del.Invoke(); 
+    }
+    
+    public static Assembly Compile(string source)
+    {
+      var provider = new CSharpCodeProvider();
+      var param = new CompilerParameters();
 
 
      bool bruh = true;
